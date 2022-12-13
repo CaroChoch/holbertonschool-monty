@@ -77,7 +77,7 @@ void exec(char *argv)
  */
 int get_op(stack_t **stack, char *arg, char *val, unsigned int line_number)
 {
-	int i = 0, value = 0;
+	int i = 0;
 
 	instruction_t op[] = {
 		{"push", push},
@@ -107,7 +107,7 @@ int get_op(stack_t **stack, char *arg, char *val, unsigned int line_number)
 			if (!strcmp(arg, "push"))
 			{
 				if (isdigit(val) == 1)
-					value = atoi(val);
+					num = atoi(val);
 				else
 					return (1);/** if not digit*/
 			}

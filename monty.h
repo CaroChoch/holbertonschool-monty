@@ -48,6 +48,7 @@ typedef struct cmd_s
 } cmd_t;
 
 extern cmd_t cmd;
+extern int num;
 
 /* ---------------- Prototypes ------------------ */
 int main(int argc, char **argv);
