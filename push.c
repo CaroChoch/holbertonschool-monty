@@ -1,6 +1,5 @@
 #include "monty.h"
 
-int num;
 /**
  * push - Function that pushes an element at the top of the stack.
  * @stack: top of the stack
@@ -10,6 +9,7 @@ void push(stack_t **stack, unsigned int line_number)
 {
 	stack_t *new = NULL;
 	(void)line_number;
+	int num = 0;
 
 	new = newnode(num);
 

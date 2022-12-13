@@ -1,7 +1,7 @@
 #include "monty.h"
 
 /**
- * frees - This function frees stack
+ * _free - This function frees stack
  * @stack: stack.
  */
 
@@ -11,8 +11,8 @@ void _free(stack_t *stack)
 
 	while (stack)
 	{
-		delete = stack;
-		stack = stack->next;
+		delete = stack->next;
 		free(delete);
+		stack = delete;
 	}
 }

@@ -8,7 +8,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <ctype.h>
-
+#include <fcntl.h>
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -21,9 +21,9 @@
  */
 typedef struct stack_s
 {
-        int n;
-        struct stack_s *prev;
-        struct stack_s *next;
+	int n;
+	struct stack_s *prev;
+	struct stack_s *next;
 } stack_t;
 
 /**
@@ -36,8 +36,8 @@ typedef struct stack_s
  */
 typedef struct instruction_s
 {
-        char *opcode;
-        void (*f)(stack_t **stack, unsigned int line_number);
+	char *opcode;
+	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
 
@@ -48,17 +48,16 @@ typedef struct cmd_s
 } cmd_t;
 
 extern cmd_t cmd;
-extern int num;
 
 /* ---------------- Prototypes ------------------ */
 int main(int argc, char **argv);
 void exec(char *argv);
-int get_op(stack_t **stack, char *arg, char *val, unsigned int line_number);
+int get_op(stack_t **stack, char *arg, unsigned int line_number);
 void _close(stack_t **stack);
 stack_t *newnode(int n);
 void _free(stack_t *stack);
 int malloc_error(void);
-void unknown_instruction_error(FILE *fd, char *buffer, stack_t *stack, char *val, int line_cmd);
+void unk_err(FILE *fd, char *buffer, stack_t *stack, int line_cmd);
 void push_int_error(FILE *fd, char *buffer, stack_t *stack, int line_number);
 
 void open_error(char *file);

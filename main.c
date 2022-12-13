@@ -11,14 +11,13 @@ cmd_t cmd = {NULL, NULL};
 int main(int argc, char **argv)
 {
 	if (argc != 2)
-       usage_error(); /* print usage_error */
+		usage_error(); /* print usage_error */
 
 	else
 		exec(argv[1]); /* read the file and execute*/
 
 	return (EXIT_SUCCESS);
 }
-
 
 
 /**
@@ -48,11 +47,11 @@ void exec(char *argv)
 			else if (*token == '#')/** is comment*/
 				continue;
 			val = strtok(NULL, LIMITERS);
-			r = get_op(&stack, token, val, c_line);
+			r = get_op(&stack, token, c_line);
 			if (r == 1) /** get_op return 1 when the value is not digit */
 				push_int_error(cmd.fd, cmd.buffer, stack, c_line); /** print push error*/
 			else if (r == -1) /** get_op returns -1 if not the instruction */
-				unknown_instruction_error(cmd.fd, cmd.buffer, stack, token, c_line);
+				unk_err(cmd.fd, cmd.buffer, stack, token, c_line);
 					/**print instruction error*/
 		}
 		free(cmd.buffer);
@@ -75,51 +74,28 @@ void exec(char *argv)
  * @line_number: iline number
  * Return: 0 in success 1 and -1 error
  */
-int get_op(stack_t **stack, char *arg, char *val, unsigned int line_number)
+int get_op(stack_t **stack, char *arg, unsigned int line_number)
 {
-	int i = 0;
+	int i;
 
 	instruction_t op[] = {
 		{"push", push},
 		{"pall", pall},
-/*  	{"pint", pint},
-		{"pop", pop},
-        {"swap", swap},
-        {"add", add},
-		{"nop", nop},
-		{"sub", sub},
-        {"div", div},
-        {"mul", mul},
-        {"mod", mod},
-        {"pchar", pchar},
-        {"pstr", pstr},
-        {"rotl", rotl},
-        {"rotr", rotr},
-        {"stack", stack},
-        {"queue", queue}, */
-		{NULL, NULL}
+		{NULL, NULL} /* to be completed */
 	};
 
-	while (op[i].opcode)
-	{
-		if (!strcmp(arg, op[i].opcode))
+	for (i = 0; op[i].opcode; i++)
+		if (strcmp(arg, op[i].opcode) == 0)
 		{
-			if (!strcmp(arg, "push"))
-			{
-				if (isdigit(val) == 1)
-					num = atoi(val);
-				else
-					return (1);/** if not digit*/
-			}
-			op[i].f(stack, (unsigned int)line_number);
-			break;
+			op[i].f(stack, line_number);
+			return;
 		}
-		i++;
-	}
-	if (!op[i].opcode)
-		return (-1);/** if not the commande*/
 
-	return (0);
+	if (strlen(arg) != 0 && arg[0] != '#')
+	{
+		unk_err();
+	}
+}
 }
 
 /**
@@ -152,7 +128,7 @@ stack_t *newnode(int n)
 
 	new = malloc(sizeof(stack_t));
 	if (new == NULL)
-    malloc_error();
+		malloc_error();
 	new->n = n;
 	new->next = NULL;
 	new->prev = NULL;
