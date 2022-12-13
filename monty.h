@@ -52,4 +52,4 @@ void is_number(stack_t *stack, unsigned int lnumber, char *token, FILE *mfile);
 int n;
 
 
-#endif _MONTY_H                                                                                                                                                                       
+#endif
