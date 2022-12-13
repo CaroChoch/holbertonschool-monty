@@ -11,14 +11,12 @@
 
 int main(int argc, char *argv[])
 {
-    int main(int argc, char *argv[])
-{
 	FILE *monty_file;
 
 	instruction_t op_functions[] = {
 		{"push", op_push},
-        {"pall", op_pall},
-	/*	{"pint", op_pint},
+/*      {"pall", op_pall},
+		{"pint", op_pint},
         {"pop", op_pop},
 		{"swap", op_swap},
         {"add", op_add},

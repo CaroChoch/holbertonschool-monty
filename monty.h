@@ -49,7 +49,7 @@ void frees(stack_t *stack);
 void exec(FILE *monty_file, instruction_t instructions[]);
 void is_number(stack_t *stack, unsigned int lnumber, char *token, FILE *mfile);
 
-
+int n;
 
 
 #endif _MONTY_H                                                                                                                                                                       
