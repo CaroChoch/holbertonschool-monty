@@ -1,29 +1,9 @@
 #include "monty.h"
 
 cmd_t cmd = {NULL, NULL};
-
 /**
- * main - the main function of the monty program
- * @argc: the argument counter
- * @argv: the argument vector
- * Return: success or failure
- */
-int main(int argc, char **argv)
-{
-	if (argc != 2)
-       usage_error(); /* print usage_error */
-
-	else
-		exec(argv[1]); /* read the file and execute*/
-
-	return (EXIT_SUCCESS);
-}
-
-
-
-/**
- * exec - function that reads the file and executes the monty byte
- *@argv: the file
+ * exec - function that read the file and execute the monty byte
+ *@argv: the file ;
  */
 void exec(char *argv)
 {
@@ -50,9 +30,9 @@ void exec(char *argv)
 			val = strtok(NULL, LIMITERS);
 			r = get_op(&stack, token, val, c_line);
 			if (r == 1) /** get_op return 1 when the value is not digit */
-				push_int_error(cmd.fd, cmd.buffer, stack, c_line); /** print push error*/
-			else if (r == -1) /** get_op returns -1 if not the instruction */
-				unknown_instruction_error(cmd.fd, cmd.buffer, stack, token, c_line);
+				push_error(cmd.fd, cmd.buffer, stack, c_line); /** print push error*/
+			else if (r == -1) /** get_op return -1 if not the instruction */
+				hand_error(cmd.fd, cmd.buffer, stack, token, c_line);
 					/**print instruction error*/
 		}
 		free(cmd.buffer);
@@ -82,31 +62,26 @@ int get_op(stack_t **stack, char *arg, char *val, unsigned int line_number)
 	instruction_t op[] = {
 		{"push", push},
 		{"pall", pall},
-/*  	{"pint", pint},
+		{"pint", pint},
 		{"pop", pop},
-        {"swap", swap},
-        {"add", add},
 		{"nop", nop},
-		{"sub", sub},
-        {"div", div},
-        {"mul", mul},
-        {"mod", mod},
-        {"pchar", pchar},
-        {"pstr", pstr},
-        {"rotl", rotl},
-        {"rotr", rotr},
-        {"stack", stack},
-        {"queue", queue}, */
+		{"swap", swap},
+		{"linking", linking},
+		{"add", add},
+		{"breaking", breaking},
+		{"increase ", increase},
+		{"enter", enter},
+		{"pchar", pchar},
 		{NULL, NULL}
 	};
 
 	while (op[i].opcode)
 	{
-		if (strcmp(arg, op[i].opcode) == NULL)
+		if (!strcmp(arg, op[i].opcode))
 		{
-			if (strcmp(arg, "push") == NULL)
+			if (!strcmp(arg, "push"))
 			{
-				if (isdigit(val) == 1)
+				if (_isdigit(val) == 1)
 					value = atoi(val);
 				else
 					return (1);/** if not digit*/
@@ -123,14 +98,14 @@ int get_op(stack_t **stack, char *arg, char *val, unsigned int line_number)
 }
 
 /**
- * _close - Frees all and closes files
+ * clean_stack - Free all and close files
  * @stack: Stack
  */
-void _close(stack_t **stack)
+void clean_stack(stack_t **stack)
 {
 	stack_t *temp = *stack;
 
-	while (temp)
+	while (temp != NULL)
 	{
 		temp = *stack;
 		*stack = (*stack)->next;
@@ -139,23 +114,4 @@ void _close(stack_t **stack)
 	}
 		fclose(cmd.fd);
 		free(cmd.buffer);
-}
-
-/**
- * newnode - function that creates a new node
- * @n: value
- * Return: a new node
- */
-stack_t *newnode(int n)
-{
-	stack_t *new = NULL;
-
-	new = malloc(sizeof(stack_t));
-	if (new == NULL)
-    malloc_error();
-	new->n = n;
-	new->next = NULL;
-	new->prev = NULL;
-
-	return (new);
 }

@@ -1,12 +1,11 @@
 #include "monty.h"
 
 /**
- * frees - This function frees memory
+ * frees - This function frees stack
  * @stack: stack.
- * Return: Nothing.
  */
 
-void frees(stack_t *stack)
+void _free(stack_t *stack)
 {
 	stack_t *delete = NULL;
 

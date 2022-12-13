@@ -41,13 +41,31 @@ typedef struct instruction_s
 } instruction_t;
 
 
+typedef struct cmd_s
+{
+	FILE *fd;
+	char *buffer;
+} cmd_t;
+
+extern cmd_t cmd;
+
 /* ---------------- Prototypes ------------------ */
-int main(int argc, char *argv[]);
-void op_push(stack_t **stack, unsigned int line_number);
-void token_error(stack_t *stack, unsigned int number, FILE *file, char *tok);
-void frees(stack_t *stack);
-void exec(FILE *monty_file, instruction_t instructions[]);
-void is_number(stack_t *stack, unsigned int lnumber, char *token, FILE *mfile);
+int main(int argc, char **argv);
+void exec(char *argv);
+int get_op(stack_t **stack, char *arg, char *val, unsigned int line_number);
+void _close(stack_t **stack);
+stack_t *newnode(int n);
+void _free(stack_t *stack);
+int malloc_error(void);
+void push_error(FILE *fd, char *buffer, stack_t *stack, int line_number);
+void hand_error(FILE *fd, char *buffer, stack_t *stack, char *val, int line_cmd);
+void open_error(char *file);
+void usage_error(void);
+
+void pall(stack_t **stack, unsigned int line_number);
+void push(stack_t **stack, unsigned int line_number);
+
+
 
 int n;
 
