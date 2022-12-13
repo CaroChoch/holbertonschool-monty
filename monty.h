@@ -57,8 +57,9 @@ void _close(stack_t **stack);
 stack_t *newnode(int n);
 void _free(stack_t *stack);
 int malloc_error(void);
-void push_error(FILE *fd, char *buffer, stack_t *stack, int line_number);
-void hand_error(FILE *fd, char *buffer, stack_t *stack, char *val, int line_cmd);
+void unknown_instruction_error(FILE *fd, char *buffer, stack_t *stack, char *val, int line_cmd);
+void push_int_error(FILE *fd, char *buffer, stack_t *stack, int line_number);
+
 void open_error(char *file);
 void usage_error(void);
 

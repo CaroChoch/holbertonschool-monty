@@ -77,7 +77,7 @@ void exec(char *argv)
  */
 int get_op(stack_t **stack, char *arg, char *val, unsigned int line_number)
 {
-	int i = 0, value;
+	int i = 0, value = 0;
 
 	instruction_t op[] = {
 		{"push", push},
@@ -102,9 +102,9 @@ int get_op(stack_t **stack, char *arg, char *val, unsigned int line_number)
 
 	while (op[i].opcode)
 	{
-		if (strcmp(arg, op[i].opcode) == NULL)
+		if (!strcmp(arg, op[i].opcode))
 		{
-			if (strcmp(arg, "push") == NULL)
+			if (!strcmp(arg, "push"))
 			{
 				if (isdigit(val) == 1)
 					value = atoi(val);
