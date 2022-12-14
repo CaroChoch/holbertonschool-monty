@@ -1,6 +1,6 @@
-#ifndef _MONTY_H_
-#define _MONTY_H_
-#define DELIMS " \t\n\r"
+#ifndef MONTY_H
+#define MONTY_H
+#define DELIMS " \n \r\t"
 
 /* --------------- Extern Libraries ----------------*/
 #include <stdio.h>
@@ -9,6 +9,9 @@
 #include <unistd.h>
 #include <ctype.h>
 #include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdbool.h>
 
 
 /**
@@ -45,10 +48,9 @@ extern stack_t **global_var;
 
 /* ---------------- Prototypes ------------------ */
 int main(int argc, char **argv);
-void exec(char *file, stack_t **stack)
+void exec(char *file, stack_t **stack);
 void _free(void);
-int get_op(stack_t **stack, char *op, unsigned int line_number)
-
+void get_op(stack_t **stack, char *op, unsigned int line_number);
 void push(stack_t **stack, unsigned int line_number);
 void pall(stack_t **stack, unsigned int line_number);
 void pint(stack_t **stack, unsigned int line_number);

@@ -13,7 +13,10 @@ int main(int argc, char **argv)
 	stack_t *head;
 
 	if (argc != 2)
-		fprintf(stderr, "USAGE: monty file\n"), exit(EXIT_FAILURE);
+	{
+		fprintf(stderr, "USAGE: monty file\n");
+		exit(EXIT_FAILURE);
+	}
 
 	head = NULL;
 	global_var = &head;
@@ -41,7 +44,10 @@ void exec(char *file, stack_t **stack)
 
 	fd = fopen(file, "r");
 	if (!fd)
-		fprintf(stderr, "Error: Can't open file %s\n", file), exit(EXIT_FAILURE);
+	{
+		fprintf(stderr, "Error: Can't open file %s\n", file);
+		exit(EXIT_FAILURE);
+	}
 
 	while ((read_line = getline(&line, &size, fd)) != -1)
 	{
@@ -64,15 +70,17 @@ void exec(char *file, stack_t **stack)
  * @op: line with commands and instructions
  * @line_number: line number
  */
-int get_op(stack_t **stack, char *op, unsigned int line_number)
+void get_op(stack_t **stack, char *op, unsigned int line_number)
 {
 	int i;
-
 	instruction_t instructions[] = {
 		{"push", push},
 		{"pall", pall},
 		{"pint", pint},
 		{"pop", pop},
+		{"swap", swap},
+		{"add", add},
+		{"nop", nop},
 		{NULL, NULL} /* to be completed */
 	};
 
@@ -84,5 +92,8 @@ int get_op(stack_t **stack, char *op, unsigned int line_number)
 		}
 
 	if (strlen(op) != 0 && op[0] != '#')
-		fprintf(stderr, "L%u: unknown instruction %s\n", line_number, op), exit(EXIT_FAILURE);
+	{
+		fprintf(stderr, "L%u: unknown instruction %s\n", line_number, op);
+		exit(EXIT_FAILURE);
+	}
 }
