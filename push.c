@@ -9,6 +9,7 @@ void push(stack_t **stack, unsigned int line_number)
 {
 	stack_t *node;
 	char *num;
+	int index;
 
 	num = strtok(NULL, DELIMS);
 	if (num == NULL)
@@ -16,6 +17,17 @@ void push(stack_t **stack, unsigned int line_number)
 		fprintf(stderr, "L%u: usage: push integer\n", line_number);
 		exit(EXIT_FAILURE);
 	}
+
+	for (index = 0; num[index] != '\0'; index++)
+	{
+		if (num[index] == '-')
+			index++;
+		if (isdigit(num[index]) == 0)
+		{
+			fprintf(stderr, "L%u: usage: push interger\n", line_number);
+			exit(EXIT_FAILURE);
+		}
+	}	
 
 	node = malloc(sizeof(stack_t));
 	if (node == NULL)
