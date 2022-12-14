@@ -27,7 +27,7 @@ void push(stack_t **stack, unsigned int line_number)
 			fprintf(stderr, "L%u: usage: push interger\n", line_number);
 			exit(EXIT_FAILURE);
 		}
-	}	
+	}
 
 	node = malloc(sizeof(stack_t));
 	if (node == NULL)
