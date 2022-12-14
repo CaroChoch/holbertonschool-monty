@@ -1,6 +1,6 @@
 #include "monty.h"
 
-cmd_t cmd = {NULL, NULL};
+stack_t **global_var;
 
 /**
  * main - the main function of the monty program
@@ -10,128 +10,79 @@ cmd_t cmd = {NULL, NULL};
  */
 int main(int argc, char **argv)
 {
+	stack_t *head;
+
 	if (argc != 2)
-		usage_error(); /* print usage_error */
+		fprintf(stderr, "USAGE: monty file\n"), exit(EXIT_FAILURE);
 
-	else
-		exec(argv[1]); /* read the file and execute*/
+	head = NULL;
+	global_var = &head;
 
-	return (EXIT_SUCCESS);
+	exec(argv[1], &head);
+
+	atexit(_free);
+	exit(EXIT_SUCCESS);
 }
 
 
 /**
  * exec - function that reads the file and executes the monty byte
- *@argv: the file
+ * @file: the name of the file
+ * @stack: pointer to the top of the stack
  */
-void exec(char *argv)
+void exec(char *file, stack_t **stack)
 {
-	int c_line = 0, r = 0;
-	size_t bufsize = 0;
-	char *token = NULL, *val = NULL;
-	stack_t *stack = NULL;
+	size_t size;
+	ssize_t read_line;
+	unsigned int num = 0;
+	char *line = NULL;
+	FILE *fd;
+	char *command;
 
-	/** open file mod read in global variable*/
-	cmd.fd = fopen(argv, "r");
-	if (cmd.fd)
-	{
-		while (getline(&cmd.buffer, &bufsize, cmd.fd) != -1)
-		{
-			c_line++;
-			token = strtok(cmd.buffer, LIMITERS);
-			if (token == NULL)
-			{
-				free(token);
-				continue;
-			}
-			else if (*token == '#')/** is comment*/
-				continue;
-			val = strtok(NULL, LIMITERS);
-			r = get_op(&stack, token, c_line);
-			if (r == 1) /** get_op return 1 when the value is not digit */
-				push_int_error(cmd.fd, cmd.buffer, stack, c_line); /** print push error*/
-			else if (r == -1) /** get_op returns -1 if not the instruction */
-				unk_err(cmd.fd, cmd.buffer, stack, token, c_line);
-					/**print instruction error*/
-		}
-		free(cmd.buffer);
-		_free(stack);/** free all*/
-		fclose(cmd.fd); /** close file*/
-	}
-	else
-	{
-		/** print open error*/
-		open_error(argv);
+	fd = fopen(file, "r");
+	if (!fd)
+		fprintf(stderr, "Error: Can't open file %s\n", file), exit(EXIT_FAILURE);
 
+	while ((read_line = getline(&line, &size, fd)) != -1)
+	{
+		command = strtok(line, DELIMS);
+		num++;
+
+		if (command)
+			get_op(stack, command, num);
 	}
+
+	if (line)
+		free(line);
+
+	fclose(fd);
 }
 
 /**
- * get_op - function that get the option function
+ * get_op - function that get the operation function
  * @stack: stack or queue
- * @arg: commande
- * @val: value
- * @line_number: iline number
- * Return: 0 in success 1 and -1 error
+ * @op: line with commands and instructions
+ * @line_number: line number
  */
-int get_op(stack_t **stack, char *arg, unsigned int line_number)
+int get_op(stack_t **stack, char *op, unsigned int line_number)
 {
 	int i;
 
-	instruction_t op[] = {
+	instruction_t instructions[] = {
 		{"push", push},
 		{"pall", pall},
+		{"pint", pint},
+		{"pop", pop},
 		{NULL, NULL} /* to be completed */
 	};
 
-	for (i = 0; op[i].opcode; i++)
-		if (strcmp(arg, op[i].opcode) == 0)
+	for (i = 0; instructions[i].opcode; i++)
+		if (strcmp(op, instructions[i].opcode) == 0)
 		{
-			op[i].f(stack, line_number);
+			instructions[i].f(stack, line_number);
 			return;
 		}
 
-	if (strlen(arg) != 0 && arg[0] != '#')
-	{
-		unk_err();
-	}
-}
-}
-
-/**
- * _close - Frees all and closes files
- * @stack: Stack
- */
-void _close(stack_t **stack)
-{
-	stack_t *temp = *stack;
-
-	while (temp)
-	{
-		temp = *stack;
-		*stack = (*stack)->next;
-
-		free(temp);
-	}
-		fclose(cmd.fd);
-		free(cmd.buffer);
-}
-
-/**
- * newnode - function that creates a new node
- * @n: value
- * Return: a new node
- */
-stack_t *newnode(int n)
-{
-	stack_t *new = NULL;
-
-	new = malloc(sizeof(stack_t));
-	if (new == NULL)
-		malloc_error();
-	new->n = n;
-	new->next = NULL;
-	new->prev = NULL;
-
-	return (new);
+	if (strlen(op) != 0 && op[0] != '#')
+		fprintf(stderr, "L%u: unknown instruction %s\n", line_number, op), exit(EXIT_FAILURE);
 }

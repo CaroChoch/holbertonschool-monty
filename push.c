@@ -7,14 +7,23 @@
  */
 void push(stack_t **stack, unsigned int line_number)
 {
-	stack_t *new = NULL;
-	(void)line_number;
-	int num = 0;
+	stack_t *node;
+	char *num;
 
-	new = newnode(num);
+	num = strtok(NULL, DELIMS);
+	if (num == NULL)
+		fprintf(stderr, "L%u: usage: push integer\n", line_number), exit(EXIT_FAILURE);
 
-	new->next = *stack;
+	node = malloc(sizeof(stack_t));
+	if (node == NULL)
+		fprintf(stderr, "Error: malloc failed\n"), exit(EXIT_FAILURE);
+
+	node->n = atoi(num);
+	node->prev = NULL;
+	node->next = *stack;
+
 	if (*stack != NULL)
-		(*stack)->prev = new;
-	*stack = new;
+		(*stack)->prev = node;
+
+	*stack = node;
 }

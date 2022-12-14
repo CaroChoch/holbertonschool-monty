@@ -1,6 +1,6 @@
 #ifndef _MONTY_H_
 #define _MONTY_H_
-#define LIMITERS " \t\n"
+#define DELIMS " \t\n\r"
 
 /* --------------- Extern Libraries ----------------*/
 #include <stdio.h>
@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <ctype.h>
 #include <fcntl.h>
+
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -40,35 +41,20 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-
-typedef struct cmd_s
-{
-	FILE *fd;
-	char *buffer;
-} cmd_t;
-
-extern cmd_t cmd;
+extern stack_t **global_var;
 
 /* ---------------- Prototypes ------------------ */
 int main(int argc, char **argv);
-void exec(char *argv);
-int get_op(stack_t **stack, char *arg, unsigned int line_number);
-void _close(stack_t **stack);
-stack_t *newnode(int n);
-void _free(stack_t *stack);
-int malloc_error(void);
-void unk_err(FILE *fd, char *buffer, stack_t *stack, int line_cmd);
-void push_int_error(FILE *fd, char *buffer, stack_t *stack, int line_number);
+void exec(char *file, stack_t **stack)
+void _free(void);
+int get_op(stack_t **stack, char *op, unsigned int line_number)
 
-void open_error(char *file);
-void usage_error(void);
-
-void pall(stack_t **stack, unsigned int line_number);
 void push(stack_t **stack, unsigned int line_number);
-
-
-
-int n;
-
+void pall(stack_t **stack, unsigned int line_number);
+void pint(stack_t **stack, unsigned int line_number);
+void pop(stack_t **stack, unsigned int line_number);
+void swap(stack_t **stack, unsigned int line_number);
+void add(stack_t **stack, unsigned int line_number);
+void nop(stack_t **stack, unsigned int line_number);
 
 #endif
