@@ -10,7 +10,7 @@
  */
 void sub(stack_t **stack, unsigned int line_number)
 {
-	stack_t *temp;
+	stack_t *temp = *stack;
 	int substrac;
 
 	if (!stack || !(*stack) || !(*stack)->next)
@@ -21,7 +21,7 @@ void sub(stack_t **stack, unsigned int line_number)
 
 	temp = *stack;
 
-	substrac = temp->n - temp->next->n;
+	substrac = temp->next->n - temp->n;
 	temp->next->n = substrac;
 
 	*stack = temp->next;
