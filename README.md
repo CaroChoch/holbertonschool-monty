@@ -13,11 +13,11 @@ This is a group project during the first year of Holberton School. Stacks and qu
 - [Stacks and Queues in C](https://data-flair.training/blogs/stacks-and-queues-in-c/)
 
 ## Requirements
-> All your files will be compiled on Ubuntu 20.04 LTS using gcc, using the options `-Wall -Werror -Wextra -pedantic`
-> You allowed to use a maximum of one global variable
-> No more than 5 functions per file
-> You are allowed to use the C standard library
-> You are expected to do the tasks in the order shown in the project
+- > All your files will be compiled on Ubuntu 20.04 LTS using gcc, using the options `-Wall -Werror -Wextra -pedantic`
+- > You allowed to use a maximum of one global variable
+- > No more than 5 functions per file
+- > You are allowed to use the C standard library
+- > You are expected to do the tasks in the order shown in the project
 
 --------------------------------------------
 ## More Info
