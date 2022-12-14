@@ -84,6 +84,7 @@ void get_op(stack_t **stack, char *op, unsigned int line_number)
 		{"sub", sub},
 		{"div", _div},
 		{"mul", mul},
+		{"mod", mod},
 		{NULL, NULL} /* to be completed */
 	};
 
