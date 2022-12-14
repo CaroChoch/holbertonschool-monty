@@ -27,7 +27,7 @@ void mod(stack_t **stack, unsigned int line_number)
 
 	temp = *stack;
 
-	modulo = temp->n % temp->next->n;
+	modulo = temp->next->n % temp->n;
 	temp->next->n = modulo;
 
 	*stack = temp->next;
