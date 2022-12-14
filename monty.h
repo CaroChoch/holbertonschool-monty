@@ -1,6 +1,6 @@
-#ifndef _MONTY_H_
-#define _MONTY_H_
-#define LIMITERS " \t\n"
+#ifndef MONTY_H
+#define MONTY_H
+#define DELIMS " \n \r\t"
 
 /* --------------- Extern Libraries ----------------*/
 #include <stdio.h>
@@ -8,6 +8,10 @@
 #include <string.h>
 #include <unistd.h>
 #include <ctype.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdbool.h>
 
 
 /**
@@ -21,9 +25,9 @@
  */
 typedef struct stack_s
 {
-        int n;
-        struct stack_s *prev;
-        struct stack_s *next;
+	int n;
+	struct stack_s *prev;
+	struct stack_s *next;
 } stack_t;
 
 /**
@@ -36,20 +40,23 @@ typedef struct stack_s
  */
 typedef struct instruction_s
 {
-        char *opcode;
-        void (*f)(stack_t **stack, unsigned int line_number);
+	char *opcode;
+	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
+extern stack_t **global_var;
 
 /* ---------------- Prototypes ------------------ */
-int main(int argc, char *argv[]);
-void op_push(stack_t **stack, unsigned int line_number);
-void token_error(stack_t *stack, unsigned int number, FILE *file, char *tok);
-void frees(stack_t *stack);
-void exec(FILE *monty_file, instruction_t instructions[]);
-void is_number(stack_t *stack, unsigned int lnumber, char *token, FILE *mfile);
-
-int n;
-
+int main(int argc, char **argv);
+void exec(char *file, stack_t **stack);
+void _free(void);
+void get_op(stack_t **stack, char *op, unsigned int line_number);
+void push(stack_t **stack, unsigned int line_number);
+void pall(stack_t **stack, unsigned int line_number);
+void pint(stack_t **stack, unsigned int line_number);
+void pop(stack_t **stack, unsigned int line_number);
+void swap(stack_t **stack, unsigned int line_number);
+void add(stack_t **stack, unsigned int line_number);
+void nop(stack_t **stack, unsigned int line_number);
 
 #endif
